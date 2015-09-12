@@ -1,4 +1,11 @@
-
+## testing
+#ARCHLINUX
+menuentry "Apricity OS"{
+	set isofile='/home/boot-isos/apricity_os-08.2015-beta.iso'
+	loopback loop (hd0,5)$isofile
+	linux (loop)/arch/boot/x86_64/vmlinuz archisodevice=/dev/loop0 img_dev=$imgdevpath img_loop=$isofile
+	initrd (loop)/arch/boot/x86_64/archiso.img
+}
 ## not testing
 menuentry "Debian Jessie (stable)" {
     set isofile='/iso/debian-8.0.0-amd64-DVD-1.iso'
