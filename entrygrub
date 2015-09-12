@@ -1,0 +1,69 @@
+
+## not testing
+menuentry "Debian Jessie (stable)" {
+    set isofile='/iso/debian-8.0.0-amd64-DVD-1.iso'
+    set initrdfile='/iso/debian-8.0.0-hdd.initrd.gz'
+    loopback loop (hd0,5)$isofile
+    linux (loop)/install.amd/vmlinuz iso-scan/ask_second_pass=true iso-scan/filename=$isofile
+    initrd (hd0,5)$initrdfile
+}
+menuentry "openSUSE_13.1_GNOME_Live" {
+  load_video
+  insmod gzio
+  insmod part_msdos
+  insmod ext2
+  set root='(hd0,msdos3)'
+  set isofrom_device='/dev/sda3'
+  set isofrom_system='/home/username/openSUSE-13.1-GNOME-Live-i686.iso'
+  set loader='/boot/i386/loader'
+  loopback loop $isofrom_system
+  linux   (loop)$loader/linux isofrom_device=$isofrom_device isofrom_system=$isofrom_system ramdisk_size=512000 ramdisk_blocksize=4096 ro quiet splash $vt_handoff preloadlog=/dev/null showopts
+  initrd  (loop)$loader/initrd
+}
+menuentry "Ubuntu Precise Pangolin 12.04 ISO" {
+    set isofile="/OS/ubuntu-12.04-desktop-i386.iso"
+    loopback loop (hd0,6)$isofile
+    linux (loop)/casper/vmlinuz boot=casper iso-scan/filename=$isofile noprompt noeject --
+    initrd (loop)/casper/initrd.lz
+}
+menuentry "SystemRescueCd" {
+    set isofile="/OS/systemrescuecd-x86-2.7.0.iso"
+    loopback loop (hd0,6)$isofile
+    linux (loop)/isolinux/rescuecd isoloop=$isofile setkmap=us docache dostartx
+    initrd (loop)/isolinux/initram.igz
+}
+menuentry "Boot Hardware Detection Tool from iso using memdisk 4.05" {
+    linux16 /customboot/memdisk4.05 iso
+    initrd16 /customboot/hdt.iso
+}
+menuentry "Free Dos from iso using memdisk 4.05" {
+    set isofile="/OS/fdbasecd.iso"
+    linux16 /customboot/memdisk4.05 iso
+    initrd16 (hd0,6)$isofile
+}
+menuentry "Hiren's boot CD using memdisk 4.05" {
+    set isofile="/OS/Hiren's.BootCD.10.1.iso"
+    linux16 /customboot/memdisk4.05 iso
+    initrd16 (hd0,6)$isofile
+}
+menuentry "Ultimate Boot CD iso using memdisk 4.05" {
+    set isofile="/OS/ubcd511.iso"
+    linux16 /customboot/memdisk4.05 iso
+    initrd16 (hd0,6)$isofile
+}
+menuentry "Kali Linux 1.0 amd64" {
+    iso="/kali-linux-1.0-amd64.iso"
+    bootoptions="findiso=$iso boot=live noconfig=sudo username=root hostname=kali quiet splash"
+    search --set -f $iso
+    loopback loop $iso
+    linux (loop)/live/vmlinuz $bootoptions
+    initrd (loop)/live/initrd.img
+}
+menuentry "Kali Linux 1.0 amd64 (forensic)" {
+    iso="/kali-linux-1.0-amd64.iso"
+    bootoptions="findiso=$iso boot=live noconfig=sudo username=root hostname=kali noswap noautomount"
+    search --set -f $iso
+    loopback loop $iso
+    linux (loop)/live/vmlinuz $bootoptions
+    initrd (loop)/live/initrd.img
+}
